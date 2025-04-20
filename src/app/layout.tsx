@@ -1,14 +1,11 @@
+import { Header } from '@/components/header';
+import { AppProviders } from '@/contexts/providers';
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import { Open_Sans } from "next/font/google";
+import '../styles/globals.css';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const openSans = Open_Sans({
+  variable: "--font-open-sans",
   subsets: ["latin"],
 });
 
@@ -23,11 +20,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${openSans.variable} antialiased`}
       >
-        {children}
+        <AppProviders>
+          <Header />
+          <main className="">
+            {children}
+          </main>
+        </AppProviders>
       </body>
     </html>
   );
