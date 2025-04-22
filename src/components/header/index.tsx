@@ -18,11 +18,14 @@ import { signIn, signOut, useSession } from 'next-auth/react'
 import { FcGoogle } from 'react-icons/fc'
 
 export function Header() {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
 
   return (
-    <header className="w-full px-6 py-5 flex items-center justify-between bg-gray-900">
-      <span className="text-xl font-semibold">MeuApp</span>
+    <header className="w-full px-6 py-5 flex items-center justify-between bg-gray-800">
+      <span
+        className="text-xl font-bold text-gray-100 tracking-wider">
+        mindBase
+      </span>
 
       {session ? (
         <DropdownMenu>
@@ -32,7 +35,7 @@ export function Header() {
               <AvatarFallback>{session.user?.name?.[0] ?? 'U'}</AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-48 bg-gray-900">
+          <DropdownMenuContent align="end" className="w-48 bg-gray-700 border-gray-600 text-gray-100">
             <DropdownMenuLabel>
               {session.user?.name}
             </DropdownMenuLabel>
@@ -59,7 +62,8 @@ export function Header() {
         </DropdownMenu>
       ) : (
         <Button
-          className="max-w-max px-4"
+          className="max-w-max px-4 text-gray-100"
+          disabled={status === 'loading'}
           onClick={() => signIn('google')}
         >
           <FcGoogle />

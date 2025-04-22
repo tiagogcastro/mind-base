@@ -1,4 +1,8 @@
+'use server'
 import { getServerSession } from '@/lib/auth';
+import Chatbot from '@/modules/dashboard/Chatbot';
+import { DatabaseDiagramProvider } from '@/modules/dashboard/contexts/DatabaseDiagramContext';
+import { DatabaseDiagram } from '@/modules/dashboard/DatabaseDiagram';
 import { redirect } from 'next/navigation';
 
 export default async function DashboardPage() {
@@ -9,9 +13,12 @@ export default async function DashboardPage() {
   }
 
   return (
-    <div>
-      <h1>Dashboard</h1>
-      <p>Welcome to the dashboard page!</p>
-    </div>
+    <DatabaseDiagramProvider>
+      <div className='bg-gray-700 w-full flex flex-col items-center justify-center h-[calc(100vh-72px)]'>
+        <DatabaseDiagram />
+
+        <Chatbot />
+      </div>
+    </DatabaseDiagramProvider>
   );
 }

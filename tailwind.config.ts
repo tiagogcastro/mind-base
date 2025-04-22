@@ -1,15 +1,34 @@
-// tailwind.config.ts
-import type { Config } from 'tailwindcss'
+import { type Config } from "tailwindcss"
 
 const config: Config = {
-  darkMode: 'class',
+  mode: 'jit',
+  darkMode: ["class"],
   content: [
-    './app/**/*.{ts,tsx}',
+    './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
-    './lib/**/*.{ts,tsx}',
+    './app/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        gray: {
+          '900': '#151516',
+          '800': '#1C1D1E',
+          '700': '#232425',
+          '600': '#353636',
+          '500': '#383939',
+          '400': '#515252',
+          '300': '#6A6B6B',
+          '200': '#9C9C9C',
+          '100': '#c3c1b9',
+          '50': '#faf7ec',
+        },
+      },
+      fontFamily: {
+        sans: ["var(--font-sans)", "sans-serif"],
+      },
+    },
   },
   plugins: [],
 }
