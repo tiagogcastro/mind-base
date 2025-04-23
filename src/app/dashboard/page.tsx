@@ -1,8 +1,7 @@
-'use server'
+import Chatbot from '@/app/dashboard/components/Chatbot';
+import { DatabaseDiagram } from '@/app/dashboard/components/DatabaseDiagram';
+import { DatabaseDiagramProvider } from '@/contexts/DatabaseDiagramContext';
 import { getServerSession } from '@/lib/auth';
-import Chatbot from '@/modules/dashboard/Chatbot';
-import { DatabaseDiagramProvider } from '@/modules/dashboard/contexts/DatabaseDiagramContext';
-import { DatabaseDiagram } from '@/modules/dashboard/DatabaseDiagram';
 import { redirect } from 'next/navigation';
 
 export default async function DashboardPage() {

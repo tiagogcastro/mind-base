@@ -1,6 +1,5 @@
-'use server'
+import { SigninAuth } from '@/app/(page)/components/auth/signin'
 import { getServerSession } from '@/lib/auth'
-import { SigninAuth } from '@/modules/auth/signin'
 import { redirect } from 'next/navigation'
 
 export default async function Home() {

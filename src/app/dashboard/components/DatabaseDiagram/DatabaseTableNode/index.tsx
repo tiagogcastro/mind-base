@@ -1,7 +1,7 @@
 'use client';
 
+import { DatabaseTableNodeDataField } from '@/contexts/DatabaseDiagramContext';
 import { Handle, Position } from '@xyflow/react';
-import { DatabaseTableNodeDataField } from '../loadDatabaseSchema';
 
 export type DatabaseTableNodeProps = {
   data: {

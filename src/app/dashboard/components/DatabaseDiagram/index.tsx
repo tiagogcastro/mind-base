@@ -6,7 +6,7 @@ import {
   ReactFlow
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { useDatabaseDiagramContext } from '../contexts/DatabaseDiagramContext';
+import { useDatabaseDiagramContext } from '../../../../contexts/DatabaseDiagramContext';
 import { ViewNodeDrawer } from './DatabaseTableNode/ViewNodeDrawer';
 
 export function DatabaseDiagram() {

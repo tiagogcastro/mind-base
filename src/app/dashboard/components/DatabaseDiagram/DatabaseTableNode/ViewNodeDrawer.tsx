@@ -1,10 +1,9 @@
 import { Button } from '@/components/ui/button';
 import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle } from '@/components/ui/drawer';
+import { DatabaseTableNodeType, useDatabaseDiagramContext } from '@/contexts/DatabaseDiagramContext';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiPlus, FiTrash, FiX } from 'react-icons/fi';
-import { useDatabaseDiagramContext } from '../../contexts/DatabaseDiagramContext';
-import { DatabaseTableNodeType } from '../loadDatabaseSchema';
 
 export type ViewNodeDrawerProps = {}
 

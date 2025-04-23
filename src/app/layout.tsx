@@ -1,5 +1,5 @@
 import { Header } from '@/components/header';
-import { AppProviders } from '@/contexts/providers';
+import { AppProviders } from '@/providers/providers';
 import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
 import './globals.css';

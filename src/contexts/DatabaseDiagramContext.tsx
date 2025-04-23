@@ -1,10 +1,37 @@
 'use client'
 import { useDisclosure, UseDisclosureReturn } from '@/hooks/useDisclosure';
-import { Connection, Edge, OnEdgesChange, OnNodesChange, useEdgesState, useNodesState } from '@xyflow/react';
+import { Connection, Edge, Node, OnEdgesChange, OnNodesChange, useEdgesState, useNodesState, XYPosition } from '@xyflow/react';
 import React, { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
-import { DefaultEdge, DefaultEdgeProps } from '../DatabaseDiagram/DatabaseTableEdge/DefaultEdge';
-import { DatabaseTableNode, DatabaseTableNodeProps } from '../DatabaseDiagram/DatabaseTableNode';
-import { DatabaseEdgeType, DatabaseTableNodeType, loadDatabaseSchema } from '../DatabaseDiagram/loadDatabaseSchema';
+import { DefaultEdge, DefaultEdgeProps } from '../app/dashboard/components/DatabaseDiagram/DatabaseTableEdge/DefaultEdge';
+import { DatabaseTableNode, DatabaseTableNodeProps } from '../app/dashboard/components/DatabaseDiagram/DatabaseTableNode';
+
+export type DatabaseTableNodeDataField = {
+  id: string;
+  name: string;
+  type: string;
+  isPrimaryKey?: boolean;
+  isForeignKey?: boolean;
+  isUnique?: boolean;
+}
+
+export type DatabaseTableNodeData = {
+  tableName: string;
+  fields: DatabaseTableNodeDataField[];
+};
+
+export type DatabaseTableNodeType = Node<DatabaseTableNodeData> & {
+  type: 'db';
+  position: XYPosition;
+};
+
+export type DatabaseEdgeType = Edge & {
+  type: 'default';
+};
+
+export type DatabaseSchema = {
+  nodes: DatabaseTableNodeType[];
+  edges: DatabaseEdgeType[];
+};
 
 type DatabaseDiagramContextType = {
   onEdgeClick: (event: React.MouseEvent, edge: Edge) => void;
@@ -48,13 +75,13 @@ export const DatabaseDiagramProvider: React.FC<{ children: ReactNode }> = ({ chi
   const [currentNodeSelected, setCurrentNodeSelected] = useState<DatabaseTableNodeType | null>(null);
 
   useEffect(() => {
-    async function load() {
-      const { nodes, edges } = await loadDatabaseSchema();
-      setNodes(nodes);
-      setEdges(edges);
-    }
+    // async function load() {
+    //   const { nodes, edges } = await loadDatabaseSchema();
+    //   setNodes(nodes);
+    //   setEdges(edges);
+    // }
 
-    load();
+    // load();
   }, []);
 
   const onConnectEdge = useCallback((params: Edge | Connection) => {
