@@ -1,14 +1,21 @@
-import { BaseEdge, EdgeProps, getStraightPath } from '@xyflow/react';
+import { BaseEdge, EdgeProps, getSmoothStepPath } from '@xyflow/react';
 
-export type DefaultEdgeProps = EdgeProps & {}
+export type DefaultEdgeProps = EdgeProps & {};
 
 export function DefaultEdge(props: DefaultEdgeProps) {
-  const { id, markerEnd, markerStart, label, sourceX, sourceY, targetX, targetY } = props;
-  const [labelX, labelY] = getStraightPath(props);
+  const { id, markerEnd, markerStart, sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition } = props;
 
-  const centerY = (targetY - sourceY) / 2 + sourceY;
+  const offset = 25;
 
-  const edgePath = `M ${sourceX} ${sourceY} L ${sourceX} ${centerY} L ${targetX} ${centerY} L ${targetX} ${targetY}`;
+  const [edgePath] = getSmoothStepPath({
+    sourceX,
+    sourceY,
+    sourcePosition,
+    targetX,
+    targetY,
+    targetPosition,
+    offset: offset,
+  });
 
   return (
     <g>

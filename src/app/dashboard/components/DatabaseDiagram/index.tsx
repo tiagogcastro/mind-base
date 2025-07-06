@@ -36,7 +36,6 @@ export function DatabaseDiagram() {
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         fitView
-        style={{ background: 'transparent' }}
       >
         <Background />
         <Controls />

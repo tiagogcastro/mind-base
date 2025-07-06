@@ -4,15 +4,17 @@ import { DatabaseTableNodeDataField } from '@/contexts/DatabaseDiagramContext';
 import { Handle, Position } from '@xyflow/react';
 
 export type DatabaseTableNodeProps = {
+  id: string;
   data: {
     tableName: string;
     fields: DatabaseTableNodeDataField[];
   };
-}
+};
 
 export function DatabaseTableNode({
   data
 }: DatabaseTableNodeProps) {
+
   return (
     <div className="rounded-xl shadow-md bg-gray-800 border border-gray-700 min-w-[200px]">
       <div className="bg-gray-700 px-4 py-2 rounded-t-xl font-semibold text-sm dark:text-white">
@@ -20,75 +22,46 @@ export function DatabaseTableNode({
       </div>
 
       <div className="px-4 py-2 text-sm text-gray-200 space-y-1">
-        {data.fields.map((field, index) => (
-          <div key={`${field.name}+${index}`} className="flex items-center gap-1">
-            <span className="truncate">
-              {field.name}
-            </span>
+        {data.fields.map((field) => {
+          const handleId = `${data.tableName}-${field.name}`;
 
-            <span className="italic">
-              ({field.type})
-            </span>
+          return (
+            <div key={field.id} className="flex items-center gap-1 relative py-1">
+              <Handle
+                type="source"
+                position={Position.Left}
+                id={handleId}
+                isConnectable={true}
+                className="!w-2 !h-2 rounded-full absolute !-left-[18px] top-1/2 transform -translate-y-1/2 cursor-grab z-10"
+              />
 
-            <span className="font-bold">
-              {field.isPrimaryKey ? 'PK' : ''}
-              {field.isForeignKey ? 'FK' : ''}
-              {field.isUnique ? 'UQ' : ''}
-            </span>
-          </div>
-        ))}
+              <div className="flex">
+                <span className="truncate flex-1">
+                  {field.name}
+                </span>
+
+                <span className="italic ml-1">
+                  ({field.type})
+                </span>
+
+                <span className="font-bold">
+                  {field.isPrimaryKey ? 'PK' : ''}
+                  {field.isForeignKey ? 'FK' : ''}
+                  {field.isUnique ? 'UQ' : ''}
+                </span>
+              </div>
+
+              <Handle
+                type="target"
+                position={Position.Right}
+                id={handleId}
+                isConnectable={true}
+                className="!w-2 !h-2 rounded-full absolute !-right-[18px] top-1/2 transform -translate-y-1/2 cursor-grab z-10"
+              />
+            </div>
+          );
+        })}
       </div>
-
-      <Handle
-        id="top"
-        type="source"
-        position={Position.Top}
-        style={{
-          top: -10,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          background: '#fff',
-          width: 10,
-          height: 10,
-        }}
-      />
-      <Handle
-        id="bottom"
-        type="source"
-        position={Position.Bottom}
-        style={{
-          bottom: -10,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          background: '#fff',
-          width: 10,
-          height: 10,
-        }}
-      />
-      <Handle
-        id="left"
-        type="source"
-        position={Position.Left}
-        style={{
-          left: -10,
-          transform: 'translateX(-50%)',
-          background: '#fff',
-          width: 10,
-          height: 10,
-        }}
-      />
-      <Handle
-        id="right"
-        type="source"
-        position={Position.Right}
-        style={{
-          right: -10,
-          transform: 'translateX(50%)',
-          background: '#fff',
-          width: 10,
-          height: 10,
-        }}
-      />
     </div>
   );
 }

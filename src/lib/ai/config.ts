@@ -1,9 +1,9 @@
 import { ENV } from '@/config/env';
 
-export type AIProvider = 'google';
-export type AIModel = 'gemini-2.0-flash';
+export type AIProvider = 'google' | 'openai';
+export type AIModel = 'gemini-2.0-flash' | 'gpt-4.1-nano';
 
-export const AI_CURRENT_PROVIDER: AIProvider = 'google';
+export const AI_CURRENT_PROVIDER: AIProvider = 'openai';
 
 export type AIModelConfig = {
   API_KEY?: string;
@@ -19,6 +19,10 @@ export const AI_MODELS: AI_MODEL_TYPE = {
     MODEL: ENV.AI_MODEL.GOOGLE_GEMINI_MODEL,
     BASE_URL: "https://generativelanguage.googleapis.com/v1beta/openai/"
   },
+  'openai': {
+    API_KEY: ENV.OPENAI_API_KEY,
+    MODEL: ENV.AI_MODEL.OPENAI_MODEL,
+  }
 }
 
 export function getAIModelConfig(provider: AIProvider): AIModelConfig {
