@@ -1,10 +1,29 @@
 'use server';
 import { mindbaseAI } from '@/lib/ai';
 import { convertDbmlToNodesAndEdges } from '@/lib/dbml';
+import { redis } from '@/lib/redis';
 import { ChatCompletionMessageParam } from 'openai/resources';
 
-async function generateDbmlFromPrompt(userPrompt: string) {
+async function getDbml(boardId: string): Promise<string | null> {
+  if (!redis.isOpen) {
+    await redis.connect();
+  }
+
+  return await redis.get(`board:${boardId}:dbml`);
+}
+
+async function setDbml(boardId: string, dbml: string): Promise<void> {
+  if (!redis.isOpen) {
+    await redis.connect();
+  }
+
+  await redis.set(`board:${boardId}:dbml`, dbml);
+}
+
+async function generateDbmlFromPrompt(userPrompt: string, boardId?: string) {
   const mindbase = await mindbaseAI();
+
+  const currentSchema = await getDbml(boardId ?? '');
 
   const systemPrompt = `
 Você é um assistente que gera apenas código DBML para representar estruturas de banco de dados.
@@ -32,6 +51,7 @@ Table posts {
   user_id int [ref: > users.id]
   title varchar
 }
+  ${currentSchema && `Schema atual: ${currentSchema}`}
   `.trim();
 
   try {
@@ -48,6 +68,8 @@ Table posts {
       },
       temperature: 0.7,
     });
+
+    console.log(completion.usage)
 
     const dbmlText = completion.choices[0].message.content?.trim() || '';
 
@@ -71,21 +93,20 @@ Table posts {
 
 export async function handleUserPrompt({ prompt, boardId }: { prompt: string, boardId: string }) {
   try {
-    const generateDbmlFromPromptResult = await generateDbmlFromPrompt(prompt);
+    const generateDbmlFromPromptResult = await generateDbmlFromPrompt(prompt, boardId);
 
     if (generateDbmlFromPromptResult.error) {
       return generateDbmlFromPromptResult;
     }
 
-    const schema = convertDbmlToNodesAndEdges(generateDbmlFromPromptResult.data.dbmlText);
+    const dbmlResult = generateDbmlFromPromptResult.data.dbmlText;
 
-    // TODO
-    // salvar DBML ou schema no Redis (opcional)
-    // await redis.set(boardId, JSON.stringify(schema));
+    const schema = convertDbmlToNodesAndEdges(dbmlResult);
+
+    await setDbml(boardId, dbmlResult);
 
     return {
       data: {
-        dbml: generateDbmlFromPromptResult.data.dbmlText,
         schema,
       },
       error: null,
