@@ -1,22 +1,8 @@
 'use server';
 import { mindbaseAI } from '@/lib/ai';
 import { convertDbmlToNodesAndEdges } from '@/lib/dbml';
-import { redis } from '@/lib/redis';
+import { getDbml, setDbml } from '@/lib/dbml/schema';
 import { ChatCompletionMessageParam } from 'openai/resources';
-
-async function getDbml(boardId: string): Promise<string | null> {
-  if (!redis.isOpen) {
-    await redis.connect();
-  }
-  return await redis.get(`board:${boardId}:dbml`);
-}
-
-async function setDbml(boardId: string, dbml: string): Promise<void> {
-  if (!redis.isOpen) {
-    await redis.connect();
-  }
-  await redis.set(`board:${boardId}:dbml`, dbml);
-}
 
 async function generateDbmlFromPrompt(userPrompt: string, boardId?: string) {
   const mindbase = await mindbaseAI();
@@ -126,7 +112,6 @@ Agora, com base no esquema atual e no prompt a seguir, gere o DBML final complet
 
     const dbmlText = completion.choices[0].message.content?.trim() || '';
 
-    // Verificação adicional para garantir que o resultado não esteja vazio
     if (!dbmlText) {
       return {
         data: null,

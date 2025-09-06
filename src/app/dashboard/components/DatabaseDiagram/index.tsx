@@ -1,23 +1,24 @@
 'use client';
-import { ViewNodeDrawer } from '@/app/dashboard/components/DatabaseDiagram/DatabaseTableNode/ViewNodeDrawer';
-import { useDatabaseDiagramContext } from '@/contexts/DatabaseDiagramContext';
-import {
-  Background,
-  ConnectionMode,
-  Controls,
-  ReactFlow
-} from '@xyflow/react';
+import { useGetBoardSchema } from '@/data/board/schema';
+import { useBoardStore } from '@/store/BoardStore';
+import { useNodeAndEdgeStore, useViewNodeDrawerStore } from '@/store/DatabaseDiagramStore';
+import { Background, ConnectionMode, Controls, ReactFlow } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
+import { ViewNodeDrawer } from './DatabaseTableNode/ViewNodeDrawer';
 
 export function DatabaseDiagram() {
-  const { nodes, edges, onEdgesChange, onNodeClick, onConnectEdge, onEdgeClick, onNodesChange, isOpenViewNodeDrawer, nodeTypes, edgeTypes } = useDatabaseDiagramContext();
+  const { selectedBoard } = useBoardStore();
+  useGetBoardSchema(selectedBoard?.id ?? '');
+  const { schema, edgeTypes, nodeTypes, onNodeClick, onConnectEdge, onEdgesChange, onNodesChange, onEdgeClick } = useNodeAndEdgeStore();
+
+  const viewNodeDrawerStore = useViewNodeDrawerStore();
 
   return (
     <div className="w-full h-full flex items-center justify-center bg-gray-900">
       <ReactFlow
         colorMode='dark'
-        nodes={nodes}
-        edges={edges}
+        nodes={schema?.nodes}
+        edges={schema?.edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnectEdge}
@@ -40,7 +41,8 @@ export function DatabaseDiagram() {
         <Background />
         <Controls />
       </ReactFlow>
-      {isOpenViewNodeDrawer.isOpen && (
+
+      {viewNodeDrawerStore.isOpen && (
         <ViewNodeDrawer />
       )}
     </div>

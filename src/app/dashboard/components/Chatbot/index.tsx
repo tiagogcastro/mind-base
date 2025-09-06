@@ -1,8 +1,9 @@
 'use client'
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { useDatabaseDiagramContext } from '@/contexts/DatabaseDiagramContext';
 import { handleUserPrompt } from '@/lib/ai/create-completion';
+import { useBoardStore } from '@/store/BoardStore';
+import { useNodeAndEdgeStore } from '@/store/DatabaseDiagramStore';
 import { useForm } from 'react-hook-form';
 import { FiArrowUp } from 'react-icons/fi';
 
@@ -16,13 +17,14 @@ export default function Chatbot() {
     content: string;
   }>();
 
-  const { setNodes, setEdges } = useDatabaseDiagramContext()
+  const { selectedBoard } = useBoardStore();
+  const { setDatabaseSchema } = useNodeAndEdgeStore();
 
   async function handleCreateCompletion() {
     const content = getValues('content');
 
     const result = await handleUserPrompt({
-      boardId: 'board-1-id-usuario',
+      boardId: selectedBoard?.id ?? '',
       prompt: content,
     });
 
@@ -31,8 +33,10 @@ export default function Chatbot() {
       return;
     }
 
-    setNodes(result.data.schema.nodes as any)
-    setEdges(result.data.schema.edges)
+    setDatabaseSchema({
+      edges: result.data.schema.edges,
+      nodes: result.data.schema.nodes,
+    })
 
     reset();
   }

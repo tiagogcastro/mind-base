@@ -4,6 +4,13 @@ export type UseDisclosureProps = {
   defaultIsOpen?: boolean;
 }
 
+export type UseZustantDisclosureGlobal = {
+  isOpen: boolean;
+  onOpen: () => void;
+  onClose: () => void;
+  onToggle: () => void;
+}
+
 export type UseDisclosureReturn = {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>

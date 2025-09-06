@@ -1,6 +1,5 @@
 import Chatbot from '@/app/dashboard/components/Chatbot';
 import { DatabaseDiagram } from '@/app/dashboard/components/DatabaseDiagram';
-import { DatabaseDiagramProvider } from '@/contexts/DatabaseDiagramContext';
 import { getServerSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 
@@ -12,12 +11,10 @@ export default async function DashboardPage() {
   }
 
   return (
-    <DatabaseDiagramProvider>
-      <div className='bg-gray-700 w-full flex flex-col items-center justify-center h-[calc(100vh-72px)]'>
-        <DatabaseDiagram />
+    <div className='bg-gray-700 w-full flex flex-col items-center justify-center h-[calc(100vh-72px)]'>
+      <DatabaseDiagram />
 
-        <Chatbot />
-      </div>
-    </DatabaseDiagramProvider>
+      <Chatbot />
+    </div>
   );
 }

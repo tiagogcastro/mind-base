@@ -1,5 +1,5 @@
 'use client';
-import { DatabaseTableNodeDataField } from '@/contexts/DatabaseDiagramContext';
+import { DatabaseTableNodeDataField } from '@/store/DatabaseDiagramStore';
 import { Handle, Position } from '@xyflow/react';
 
 export type DatabaseTableNodeProps = {
@@ -34,14 +34,16 @@ export function DatabaseTableNode({
                 className="!w-2 !h-2 rounded-full absolute !-left-[18px] top-1/2 transform -translate-y-1/2 cursor-grab z-10"
               />
 
-              <div className="flex">
-                <span className="truncate flex-1">
-                  {field.name}
-                </span>
+              <div className="flex gap-1">
+                <div className="flex gap-0.5">
+                  <span className="truncate flex-1">
+                    {field.name}
+                  </span>
 
-                <span className="italic ml-1">
-                  ({field.type})
-                </span>
+                  <span className="italic">
+                    ({field.type})
+                  </span>
+                </div>
 
                 <span className="font-bold">
                   {field.isPrimaryKey ? 'PK' : ''}

@@ -14,23 +14,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { useBoardStore } from "@/contexts/BoardContext"
+import { useBoardStore } from "@/store/BoardStore"
 import { signIn, signOut, useSession } from 'next-auth/react'
-import { useEffect } from 'react'
 import { FcGoogle } from 'react-icons/fc'
 
 export function Header() {
   const { data: session, status } = useSession()
-  const { boards, selectedBoard, selectBoard, setBoards } = useBoardStore()
-
-  useEffect(() => {
-    if (boards.length === 0) {
-      setBoards([
-        { id: "1", name: "Board 1" },
-        { id: "2", name: "Board 2" },
-      ])
-    }
-  }, [boards.length, setBoards])
+  const { boards, selectedBoard, selectBoard } = useBoardStore()
 
   return (
     <header className="w-full px-6 py-5 flex items-center justify-between bg-gray-800">

@@ -1,7 +1,7 @@
 import { Parser } from '@dbml/core';
 import { nanoid } from 'nanoid';
 
-type FieldType = {
+export interface FieldType {
   id: string;
   name: string;
   type: string;
@@ -10,7 +10,7 @@ type FieldType = {
   isUnique: boolean;
 };
 
-type TableNode = {
+export interface TableNode {
   id: string;
   type: 'db';
   position: {
@@ -23,7 +23,7 @@ type TableNode = {
   };
 };
 
-type TableEdge = {
+export interface TableEdge {
   id: string;
   source: string;
   target: string;
@@ -33,7 +33,7 @@ type TableEdge = {
   label?: string;
 };
 
-type NodesAndEdges = {
+export interface NodesAndEdges {
   nodes: TableNode[];
   edges: TableEdge[];
 };
