@@ -1,50 +1,14 @@
+import { DatabaseSchema, DatabaseTableNodeDataField } from '@/store/DatabaseDiagramStore';
 import { Parser } from '@dbml/core';
 import { nanoid } from 'nanoid';
 
-export interface FieldType {
-  id: string;
-  name: string;
-  type: string;
-  isPrimaryKey: boolean;
-  isForeignKey: boolean;
-  isUnique: boolean;
-};
-
-export interface TableNode {
-  id: string;
-  type: 'db';
-  position: {
-    x: number;
-    y: number;
-  };
-  data: {
-    tableName: string;
-    fields: FieldType[];
-  };
-};
-
-export interface TableEdge {
-  id: string;
-  source: string;
-  target: string;
-  sourceHandle: string;
-  targetHandle: string;
-  type: 'default';
-  label?: string;
-};
-
-export interface NodesAndEdges {
-  nodes: TableNode[];
-  edges: TableEdge[];
-};
-
-export function convertDbmlToNodesAndEdges(dbmlText: string): NodesAndEdges {
+export function convertDbmlToNodesAndEdges(dbmlText: string): DatabaseSchema {
   const parser = new Parser();
   const parsed = parser.parse(dbmlText, 'dbml');
 
   const tables = parsed.schemas?.[0]?.tables || [];
 
-  const nodesAndEdges: NodesAndEdges = {
+  const nodesAndEdges: DatabaseSchema = {
     nodes: [],
     edges: [],
   };
@@ -56,8 +20,8 @@ export function convertDbmlToNodesAndEdges(dbmlText: string): NodesAndEdges {
     const tableId: string = table.name;
     tableIdMap.set(table.name, table.name);
 
-    const fields: FieldType[] = Array.isArray(table.fields)
-      ? table.fields.map((field: any): FieldType => ({
+    const fields: DatabaseTableNodeDataField[] = Array.isArray(table.fields)
+      ? table.fields.map((field: any): DatabaseTableNodeDataField => ({
         id: nanoid(6),
         name: field.name,
         type: field.type?.type_name || 'varchar',

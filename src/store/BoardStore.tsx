@@ -1,9 +1,6 @@
 import { create } from 'zustand';
 
-type Board = {
-  id: string;
-  name: string;
-};
+type Board = { id: string; name: string };
 
 type BoardState = {
   boards: Board[];
@@ -12,22 +9,27 @@ type BoardState = {
   selectBoard: (board: Board) => void;
 };
 
-export const useBoardStore = create<BoardState>((set) => {
+export const useBoardStore = create<BoardState>((set, get) => {
   const initialBoards: Board[] = [
-    {
-      id: 'board-1-id-usuario',
-      name: 'board-1-id-usuario'
-    },
-    {
-      id: 'board-2-id-usuario',
-      name: 'board-2-id-usuario'
-    }
+    { id: 'board-1-id-usuario', name: 'board-1-id-usuario' },
+    { id: 'board-2-id-usuario', name: 'board-2-id-usuario' },
   ];
+
+  const defaultBoard = initialBoards.length > 0 ? initialBoards[0] : null;
 
   return {
     boards: initialBoards,
-    selectedBoard: initialBoards[0] || null,
-    setBoards: (boards) => set({ boards }),
+    selectedBoard: defaultBoard,
+    setBoards: (boards) => {
+      const current = get().selectedBoard;
+      const stillExists = current && boards.some(b => b.id === current.id);
+      const selectedBoard = stillExists ? current : boards.length > 0 ? boards[0] : null
+
+      set({
+        boards,
+        selectedBoard,
+      });
+    },
     selectBoard: (board) => set({ selectedBoard: board }),
   };
 });

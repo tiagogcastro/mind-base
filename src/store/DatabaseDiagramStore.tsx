@@ -2,16 +2,16 @@
 import { DefaultEdge } from '@/app/dashboard/components/DatabaseDiagram/DatabaseTableEdge/DefaultEdge';
 import { DatabaseTableNode } from '@/app/dashboard/components/DatabaseDiagram/DatabaseTableNode';
 import { UseZustantDisclosureGlobal } from '@/hooks/useDisclosure';
-import { applyEdgeChanges, applyNodeChanges, Connection, Edge, Node, XYPosition } from '@xyflow/react';
+import { applyEdgeChanges, applyNodeChanges, Connection, Edge, Node } from '@xyflow/react';
 import { create } from 'zustand';
 
 export type DatabaseTableNodeDataField = {
   id: string;
   name: string;
   type: string;
-  isPrimaryKey?: boolean;
-  isForeignKey?: boolean;
-  isUnique?: boolean;
+  isPrimaryKey: boolean;
+  isForeignKey: boolean;
+  isUnique: boolean;
 }
 
 export type DatabaseTableNodeData = {
@@ -20,12 +20,26 @@ export type DatabaseTableNodeData = {
 };
 
 export type DatabaseTableNodeType = Node<DatabaseTableNodeData> & {
+  id: string;
   type: 'db';
-  position: XYPosition;
+  position: {
+    x: number;
+    y: number;
+  };
+  data: {
+    tableName: string;
+    fields: DatabaseTableNodeDataField[];
+  };
 };
 
-export type DatabaseEdgeType = Edge & {
+export type DatabaseEdgeType = {
+  id: string;
+  source: string;
+  target: string;
+  sourceHandle: string;
+  targetHandle: string;
   type: 'default';
+  label?: string;
 };
 
 export type DatabaseSchema = {

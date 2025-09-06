@@ -1,5 +1,5 @@
-import { convertDbmlToNodesAndEdges } from '@/lib/dbml';
-import { getDbml } from '@/lib/dbml/schema';
+import { convertDbmlToNodesAndEdges } from '@/lib/dbml/convertDbmlToNodesAndEdges';
+import { getDbml } from '@/lib/redis/getDBML';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {

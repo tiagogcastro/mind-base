@@ -1,10 +1,9 @@
 'use server';
-import { mindbaseAI } from '@/lib/ai';
-import { convertDbmlToNodesAndEdges } from '@/lib/dbml';
-import { getDbml, setDbml } from '@/lib/dbml/schema';
+import { mindbaseAI } from '@/config/AI';
+import { getDbml } from '@/lib/redis/getDBML';
 import { ChatCompletionMessageParam } from 'openai/resources';
 
-async function generateDbmlFromPrompt(userPrompt: string, boardId?: string) {
+export async function generateDbml(userPrompt: string, boardId?: string) {
   const mindbase = await mindbaseAI();
   const currentSchema = await getDbml(boardId ?? '') || '';
 
@@ -142,33 +141,3 @@ Agora, com base no esquema atual e no prompt a seguir, gere o DBML final complet
   }
 }
 
-export async function handleUserPrompt({ prompt, boardId }: { prompt: string, boardId: string }) {
-  try {
-    const generateDbmlFromPromptResult = await generateDbmlFromPrompt(prompt, boardId);
-
-    if (generateDbmlFromPromptResult.error) {
-      return generateDbmlFromPromptResult;
-    }
-
-    const dbmlResult = generateDbmlFromPromptResult.data.dbmlText;
-    const schema = convertDbmlToNodesAndEdges(dbmlResult);
-
-    await setDbml(boardId, dbmlResult);
-
-    return {
-      data: {
-        schema,
-      },
-      error: null,
-    };
-  } catch (err) {
-    console.error('Erro ao gerar DBML:', err);
-    return {
-      data: null,
-      error: {
-        type: 'HandleUserPromptError',
-        message: 'Erro ao processar o prompt do usuário',
-      }
-    };
-  }
-}

@@ -1,14 +1,10 @@
 'use client';
-import { useGetBoardSchema } from '@/data/board/schema';
-import { useBoardStore } from '@/store/BoardStore';
 import { useNodeAndEdgeStore, useViewNodeDrawerStore } from '@/store/DatabaseDiagramStore';
 import { Background, ConnectionMode, Controls, ReactFlow } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { ViewNodeDrawer } from './DatabaseTableNode/ViewNodeDrawer';
 
 export function DatabaseDiagram() {
-  const { selectedBoard } = useBoardStore();
-  useGetBoardSchema(selectedBoard?.id ?? '');
   const { schema, edgeTypes, nodeTypes, onNodeClick, onConnectEdge, onEdgesChange, onNodesChange, onEdgeClick } = useNodeAndEdgeStore();
 
   const viewNodeDrawerStore = useViewNodeDrawerStore();

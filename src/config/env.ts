@@ -1,4 +1,4 @@
-import { AIModel } from '@/lib/ai/config';
+import { AIModel } from '@/config/AI/config';
 
 export const ENV = {
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID as string,

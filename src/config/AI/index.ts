@@ -1,8 +1,8 @@
 'use server';
+import { AI_CURRENT_PROVIDER, getAIModelConfig } from '@/config/AI/config';
 import { ENV } from '@/config/env';
 import { ChatOpenAI, OpenAIEmbeddings } from '@langchain/openai';
 import { default as OpenAI } from "openai";
-import { AI_CURRENT_PROVIDER, getAIModelConfig } from './config';
 
 export const mindbaseAI = async () => {
   const { API_KEY, BASE_URL, MODEL } = getAIModelConfig(AI_CURRENT_PROVIDER);
