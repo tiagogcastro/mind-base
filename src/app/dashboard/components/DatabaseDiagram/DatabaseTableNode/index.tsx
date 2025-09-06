@@ -1,5 +1,4 @@
 'use client';
-
 import { DatabaseTableNodeDataField } from '@/contexts/DatabaseDiagramContext';
 import { Handle, Position } from '@xyflow/react';
 

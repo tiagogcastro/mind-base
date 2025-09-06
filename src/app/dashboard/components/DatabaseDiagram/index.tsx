@@ -1,4 +1,6 @@
 'use client';
+import { ViewNodeDrawer } from '@/app/dashboard/components/DatabaseDiagram/DatabaseTableNode/ViewNodeDrawer';
+import { useDatabaseDiagramContext } from '@/contexts/DatabaseDiagramContext';
 import {
   Background,
   ConnectionMode,
@@ -6,8 +8,6 @@ import {
   ReactFlow
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { useDatabaseDiagramContext } from '../../../../contexts/DatabaseDiagramContext';
-import { ViewNodeDrawer } from './DatabaseTableNode/ViewNodeDrawer';
 
 export function DatabaseDiagram() {
   const { nodes, edges, onEdgesChange, onNodeClick, onConnectEdge, onEdgeClick, onNodesChange, isOpenViewNodeDrawer, nodeTypes, edgeTypes } = useDatabaseDiagramContext();

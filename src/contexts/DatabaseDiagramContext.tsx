@@ -1,9 +1,9 @@
 'use client'
+import { DefaultEdge, DefaultEdgeProps } from '@/app/dashboard/components/DatabaseDiagram/DatabaseTableEdge/DefaultEdge';
+import { DatabaseTableNode, DatabaseTableNodeProps } from '@/app/dashboard/components/DatabaseDiagram/DatabaseTableNode';
 import { useDisclosure, UseDisclosureReturn } from '@/hooks/useDisclosure';
 import { Connection, Edge, Node, OnEdgesChange, OnNodesChange, useEdgesState, useNodesState, XYPosition } from '@xyflow/react';
 import React, { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
-import { DefaultEdge, DefaultEdgeProps } from '../app/dashboard/components/DatabaseDiagram/DatabaseTableEdge/DefaultEdge';
-import { DatabaseTableNode, DatabaseTableNodeProps } from '../app/dashboard/components/DatabaseDiagram/DatabaseTableNode';
 
 export type DatabaseTableNodeDataField = {
   id: string;
