@@ -14,25 +14,31 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { useBoardStore } from "@/store/BoardStore"
+import { Board, useBoardStore } from "@/store/BoardStore"
 import { signIn, signOut, useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import { FcGoogle } from 'react-icons/fc'
 
 export function Header() {
   const { data: session, status } = useSession()
   const { boards, selectedBoard, selectBoard } = useBoardStore()
+  const router = useRouter()
+
+  const handleBoardSelect = (board: Board) => {
+    selectBoard(board)
+    router.push(`/dashboard/${board.id}`)
+  }
 
   return (
     <header className="w-full px-6 py-5 flex items-center justify-between bg-gray-800">
-      <span
-        className="text-xl font-bold text-gray-100 tracking-wider">
+      <span className="text-xl font-bold text-gray-100 tracking-wider">
         mindBase
       </span>
 
       <div className="flex items-center gap-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button >
+            <Button>
               {selectedBoard ? selectedBoard.name : "Selecione um board"}
             </Button>
           </DropdownMenuTrigger>
@@ -40,7 +46,8 @@ export function Header() {
             {boards.map((board) => (
               <DropdownMenuItem
                 key={board.id}
-                onClick={() => selectBoard(board)}
+                onClick={() => handleBoardSelect(board)}
+                className={selectedBoard?.id === board.id ? "bg-gray-600" : ""}
               >
                 {board.name}
               </DropdownMenuItem>
@@ -62,12 +69,10 @@ export function Header() {
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
 
-              <DropdownMenuItem
-              >
+              <DropdownMenuItem>
                 Perfil
               </DropdownMenuItem>
-              <DropdownMenuItem
-              >
+              <DropdownMenuItem>
                 Dashboard
               </DropdownMenuItem>
               <DropdownMenuSeparator />

@@ -6,7 +6,6 @@ import { ViewNodeDrawer } from './DatabaseTableNode/ViewNodeDrawer';
 
 export function DatabaseDiagram() {
   const { schema, edgeTypes, nodeTypes, onNodeClick, onConnectEdge, onEdgesChange, onNodesChange, onEdgeClick } = useNodeAndEdgeStore();
-
   const viewNodeDrawerStore = useViewNodeDrawerStore();
 
   return (

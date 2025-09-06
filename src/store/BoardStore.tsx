@@ -1,12 +1,13 @@
 import { create } from 'zustand';
 
-type Board = { id: string; name: string };
+export type Board = { id: string; name: string };
 
-type BoardState = {
+export type BoardState = {
   boards: Board[];
   selectedBoard: Board | null;
   setBoards: (boards: Board[]) => void;
   selectBoard: (board: Board) => void;
+  selectBoardById: (boardId: string) => Board | null;
 };
 
 export const useBoardStore = create<BoardState>((set, get) => {
@@ -31,5 +32,16 @@ export const useBoardStore = create<BoardState>((set, get) => {
       });
     },
     selectBoard: (board) => set({ selectedBoard: board }),
+    selectBoardById: (boardId: string) => {
+      const { boards } = get();
+      const board = boards.find((board) => board.id === boardId);
+
+      if (board) {
+        set({ selectedBoard: board });
+        return board;
+      }
+
+      return null;
+    },
   };
 });
