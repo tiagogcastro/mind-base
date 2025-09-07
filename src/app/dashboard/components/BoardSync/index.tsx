@@ -18,7 +18,6 @@ export function BoardSync() {
       const board = selectBoardById(boardId)
 
       if (!board) {
-        console.warn(`Board ${boardId} não encontrado`)
         router.push('/dashboard')
       }
     }

@@ -1,13 +1,27 @@
 import { create } from 'zustand';
 
-export type Board = { id: string; name: string };
+export type Board = {
+  id: string;
+  name: string;
+  description?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+};
+
+export type CreateBoardData = {
+  newBoard: {
+    name: string;
+    description?: string;
+  };
+  userId: string;
+}
 
 export type BoardState = {
   boards: Board[];
   selectedBoard: Board | null;
   setBoards: (boards: Board[]) => void;
-  selectBoard: (board: Board) => void;
   selectBoardById: (boardId: string) => Board | null;
+  addBoard: (data: CreateBoardData) => Promise<Board>;
 };
 
 export const useBoardStore = create<BoardState>((set, get) => {
@@ -21,6 +35,7 @@ export const useBoardStore = create<BoardState>((set, get) => {
   return {
     boards: initialBoards,
     selectedBoard: defaultBoard,
+
     setBoards: (boards) => {
       const current = get().selectedBoard;
       const stillExists = current && boards.some(b => b.id === current.id);
@@ -31,7 +46,7 @@ export const useBoardStore = create<BoardState>((set, get) => {
         selectedBoard,
       });
     },
-    selectBoard: (board) => set({ selectedBoard: board }),
+
     selectBoardById: (boardId: string) => {
       const { boards } = get();
       const board = boards.find((board) => board.id === boardId);
@@ -43,5 +58,21 @@ export const useBoardStore = create<BoardState>((set, get) => {
 
       return null;
     },
+
+    addBoard: async ({ newBoard, userId }: CreateBoardData) => {
+      const board: Board = {
+        ...newBoard,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        id: `${newBoard.name.toLowerCase().replace(/\s+/g, '-')}-${userId.toLowerCase().replace(/\s+/g, '-')}`,
+      };
+
+      set((state) => ({
+        boards: [board, ...state.boards],
+        selectedBoard: board
+      }));
+
+      return board;
+    }
   };
 });
