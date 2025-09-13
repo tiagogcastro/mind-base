@@ -5,19 +5,3 @@
 body {
   font-family: 'Open Sans', sans-serif;
 }
-
-.react-flow__node {
-  z-index: 10 !important;
-}
-
-/* O SVG container das arestas */
-.react-flow__edges {
-  z-index: 10 !important;
-}
-
-/* O caminho SVG individual de cada aresta (dentro do .react-flow__edges) */
-/* Embora o z-index no .react-flow__edges deva ser suficiente,
-   colocar aqui também pode garantir, se houver problemas de contexto. */
-.react-flow__edge-path {
-  z-index: 11 !important;
-}

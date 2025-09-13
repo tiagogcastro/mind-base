@@ -69,6 +69,10 @@ type DatabaseSchemaState = {
   onNodesChange: (changes: any[]) => void;
   onEdgesChange: (changes: any[]) => void;
   onConnectEdge: (params: Edge | Connection) => void;
+  onReconnect: (oldEdge: Edge, newConnection: Connection) => void;
+  onReconnectStart: () => void;
+  onReconnectEnd: () => void;
+  updateEdge: (edgeId: string, data: Partial<DatabaseEdgeType>) => void;
 
   updateCurrentNode: (patch: { tableName?: string; fields?: any[] }) => void;
   deleteFieldFromCurrentNode: (fieldId: string) => void;
@@ -133,6 +137,60 @@ export const useNodeAndEdgeStore = create<DatabaseSchemaState>((set, get) => ({
 
       const nextEdges = [...prevEdges, newEdge];
       return { schema: { ...prev, edges: nextEdges } };
+    });
+  },
+
+  onReconnect: (oldEdge, newConnection) => {
+    set((state) => {
+      if (!state.schema) return state;
+
+      const edges = state.schema.edges.map((edge) => {
+        if (edge.id === oldEdge.id) {
+          return {
+            ...edge,
+            source: newConnection.source!,
+            target: newConnection.target!,
+            sourceHandle: newConnection.sourceHandle!,
+            targetHandle: newConnection.targetHandle!,
+          };
+        }
+        return edge;
+      });
+
+      return {
+        schema: {
+          ...state.schema,
+          edges
+        }
+      };
+    });
+  },
+
+  onReconnectStart: () => {
+    console.log('Reconnect started');
+  },
+
+  onReconnectEnd: () => {
+    console.log('Reconnect ended');
+  },
+
+  updateEdge: (edgeId, data) => {
+    set((state) => {
+      if (!state.schema) return state;
+
+      const edges = state.schema.edges.map((edge) => {
+        if (edge.id === edgeId) {
+          return { ...edge, ...data };
+        }
+        return edge;
+      });
+
+      return {
+        schema: {
+          ...state.schema,
+          edges
+        }
+      };
     });
   },
 
